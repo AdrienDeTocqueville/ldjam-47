@@ -111,7 +111,7 @@ public class MotionLooper : MonoBehaviour
 		{
 			Vector2 position = transform.position;
 			Vector3 rotation = transform.rotation.eulerAngles;
-
+			
 			Vector2 movement = position - lastPosition;
 			float speed = movement.magnitude;
 			if (speed < 0.05f)

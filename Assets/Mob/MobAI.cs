@@ -15,7 +15,7 @@ public class MobAI : MonoBehaviour
     int groundLayers;
     Vector2 extents;
     Rigidbody2D rb;
-    bool onTheGround;
+    bool wasOnGround;
 
     void Start()
     {
@@ -29,31 +29,50 @@ public class MobAI : MonoBehaviour
                 extents = collider.size * 0.5f * transform.localScale;
         }
 
-        onTheGround = false;
+        wasOnGround = false;
 
         Switcheroo(direction);
+    }
+
+    bool IsOnGround()
+    {
+        Vector2 offset = (direction == Direction.Left) ? Vector2.left : Vector2.right;
+
+        Vector2 raycast = (Vector2)transform.position - extents.x * offset;
+        Debug.DrawRay(raycast, Vector2.down);
+
+        var result = Physics2D.Raycast(raycast, Vector2.down, Mathf.Infinity, 1 << groundLayers);
+        if (result.collider != null && result.distance <= extents.y + 0.05f)
+            return true;
+        
+        raycast = (Vector2)transform.position + extents.x * offset;
+        Debug.DrawRay(raycast, Vector2.down);
+
+        result = Physics2D.Raycast(raycast, Vector2.down, Mathf.Infinity, 1 << groundLayers);
+        return (result.collider != null && result.distance <= extents.y + 0.05f);
     }
 
     void Update()
     {
         // Only move if touching the ground
-        Vector2 offset = (direction == Direction.Left) ? Vector2.left : Vector2.right;
-        Vector2 raycast = (Vector2)transform.position - extents.x * offset;
-        var result = Physics2D.Raycast(raycast, Vector2.down, Mathf.Infinity, 1 << groundLayers);
-        if (result.collider != null && result.distance <= extents.y + 0.05f)
+        if (IsOnGround())
         {
-            onTheGround = true;
+            if (!wasOnGround)
+            {
+                wasOnGround = true;
+                rb.velocity = Vector2.zero;
+            }
             transform.Translate(speed * Time.deltaTime, 0, 0);
         }
-        else if (onTheGround)
+        else if (wasOnGround)
         {
-            onTheGround = false;
+            wasOnGround = false;
             Vector2 v = rb.velocity;
-            v.x = speed;
+            v.x = speed * (direction == Direction.Left ? -1 : 1);
             rb.velocity = v;
         }
 
-        if (Input.GetKeyDown("space"))
+        if (Input.GetKeyDown("e"))
         {
             var loopers = GameObject.FindObjectsOfType<MotionLooper>();
             foreach (var looper in loopers)
@@ -65,7 +84,7 @@ public class MobAI : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if ((collision.gameObject.layer & collideLayers) != 0)
+        //if ((collision.gameObject.layer & collideLayers) != 0)
             Switcheroo(1 - direction);
     }
 
