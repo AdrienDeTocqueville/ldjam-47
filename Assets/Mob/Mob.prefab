@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7205063990971924047}
   - component: {fileID: 7205063990971924044}
   - component: {fileID: 7205063990971924045}
+  - component: {fileID: 5067299924432016130}
   - component: {fileID: 7205063990971924046}
   - component: {fileID: 7205063990971924051}
   - component: {fileID: 7205063990971924050}
@@ -68,6 +69,19 @@ MonoBehaviour:
   debugView: 0
   catmullRomSpline: 0
   angleTolerance: 0.05
+--- !u!114 &5067299924432016130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7205063990971924041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6072ad0f92f46749b3968413cfceb2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vie: 100
 --- !u!212 &7205063990971924046
 SpriteRenderer:
   m_ObjectHideFlags: 0
