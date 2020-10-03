@@ -74,7 +74,7 @@ public class MotionLooper : MonoBehaviour
             KeyFrame b = frames[currentFrame];
 
             float alpha = (now - a.timestamp) / (b.timestamp - a.timestamp);
-            transform.position = Vector2.Lerp(a.position, b.position, alpha);
+            transform.position = Vector2.Lerp(a.position, b.position, float.IsNaN(alpha) ? 0.0f : alpha);
             transform.rotation = Quaternion.Lerp(Quaternion.Euler(a.rotation), Quaternion.Euler(a.rotation), alpha);
         }
     }
