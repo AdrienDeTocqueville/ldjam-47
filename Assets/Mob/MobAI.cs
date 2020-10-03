@@ -12,26 +12,46 @@ public class MobAI : MonoBehaviour
     public float speed = 2.0f;
 
     int collideLayers;
+    int groundLayers;
+    Vector2 extents;
+    Rigidbody2D rb;
+    bool onTheGround;
 
     void Start()
     {
         collideLayers = LayerMask.NameToLayer("Terrain") | LayerMask.NameToLayer("Mob");
+        groundLayers = LayerMask.NameToLayer("Terrain");
+
+        rb = GetComponent<Rigidbody2D>();
+        foreach (var collider in GetComponents<BoxCollider2D>())
+        {
+            if (!collider.isTrigger)
+                extents = collider.size * 0.5f * transform.localScale;
+        }
+
+        onTheGround = false;
+
+        Switcheroo(direction);
     }
 
-    private void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        var angles = transform.rotation.eulerAngles;
-        angles.y = (direction == Direction.Left) ? 180.0f : 0.0f;
-        transform.rotation = Quaternion.Euler(angles);
-
-        transform.Translate(speed * Time.deltaTime, 0.0f, 0.0f);
-
+        // Only move if touching the ground
+        Vector2 offset = (direction == Direction.Left) ? Vector2.left : Vector2.right;
+        Vector2 raycast = (Vector2)transform.position - extents.x * offset;
+        var result = Physics2D.Raycast(raycast, Vector2.down, Mathf.Infinity, 1 << groundLayers);
+        if (result.collider != null && result.distance <= extents.y + 0.05f)
+        {
+            onTheGround = true;
+            transform.Translate(speed * Time.deltaTime, 0, 0);
+        }
+        else if (onTheGround)
+        {
+            onTheGround = false;
+            Vector2 v = rb.velocity;
+            v.x = speed;
+            rb.velocity = v;
+        }
 
         if (Input.GetKeyDown("space"))
         {
@@ -46,12 +66,16 @@ public class MobAI : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collision)
     {
         if ((collision.gameObject.layer & collideLayers) != 0)
-            Switcheroo();
+            Switcheroo(1 - direction);
     }
 
 
-    public void Switcheroo()
+    public void Switcheroo(Direction dir)
     {
-        direction = (1 - direction);
+        direction = dir;
+
+        var angles = transform.rotation.eulerAngles;
+        angles.y = (direction == Direction.Left) ? 180.0f : 0.0f;
+        transform.rotation = Quaternion.Euler(angles);
     }
 }

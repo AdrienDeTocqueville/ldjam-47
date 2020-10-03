@@ -1,100 +1,214 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Data;
+using System.Runtime.InteropServices;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class MotionLooper : MonoBehaviour
 {
-    public struct KeyFrame
-    {
-        public float timestamp;
-        public Vector2 position;
-        public Vector2 rotation;
+	public struct KeyFrame
+	{
+		public float timestamp;
+		public Vector2 position;
+		public Vector2 rotation;
 
-        public bool Diff(Vector2 position, Vector2 rotation, float epsilon)
-        {
-            return (Vector2.Dot(position, this.position) > Mathf.Epsilon * Mathf.Epsilon * epsilon) &&
-                (Vector2.Dot(rotation, this.rotation) > Mathf.Epsilon * Mathf.Epsilon * epsilon);
-        }
-    }
-    List<KeyFrame> frames;
-    bool replaying = false;
-    float refTime;
-    int currentFrame;
+		public KeyFrame Sub(KeyFrame other)
+		{
+			return new KeyFrame() {
+				timestamp = timestamp - (other.timestamp - timestamp),
+				position = position - (other.position - position),
+				rotation = rotation - (other.rotation - rotation)
+			};
+		}
+		public KeyFrame Add(KeyFrame other)
+		{
+			return new KeyFrame() {
+				timestamp = timestamp + (timestamp - other.timestamp),
+				position = position + (position - other.position),
+				rotation = rotation + (rotation - other.rotation)
+			};
+		}
+	}
 
-    public readonly bool replayMotion = true;
-    public float epsilon = 10.0f;
-    public GameObject explosion = null;
+	List<KeyFrame> frames;
+	bool replaying = false;
+	float refTime;
+	int currentFrame;
 
-    void Awake()
-    {
-        frames = new List<KeyFrame>();
-        frames.Add(new KeyFrame()
-        {
-           timestamp = 0,
-           position = transform.position,
-           rotation = transform.rotation.eulerAngles
-        });
-        refTime = Time.time;
-    }
+	Vector2 lastPosition;
+	Vector2 lastSavedDirection;
+	float lastSavedSpeed;
 
-    void Update()
-    {
-        if (!replayMotion)
-            return;
+	public bool replayMotion = true;
+	public GameObject explosion = null;
 
-        if (!replaying)
-        {
-            Vector2 position = transform.position;
-            Vector3 rotation = transform.rotation.eulerAngles;
+	public bool debugView = false;
+	public bool catmullRomSpline = false;
+	public float angleTolerance = 0.1f;
 
-            if (frames[frames.Count - 1].Diff(position, rotation, epsilon))
-                frames.Add(new KeyFrame()
-                {
-                   timestamp = Time.time - refTime,
-                   position = position,
-                   rotation = rotation
-                });
-        }
-        else
-        {
-            float now = Time.time - refTime;
-            if (now > frames[currentFrame].timestamp)
-                currentFrame++;
+	void Awake()
+	{
+		lastPosition = transform.position;
+		lastSavedDirection = Vector2.left;
+		lastSavedSpeed = 0.0f;
 
-            if (currentFrame >= frames.Count)
-            {
-                Instantiate(explosion, transform.position, transform.rotation);
-                GameObject.Destroy(gameObject);
-                return;
-            }
+		frames = new List<KeyFrame>();
+		frames.Add(new KeyFrame()
+		{
+			timestamp = 0,
+			position = lastPosition,
+			rotation = transform.rotation.eulerAngles
+		});
+		refTime = Time.time;
+	}
 
-            KeyFrame a = frames[currentFrame - 1];
-            KeyFrame b = frames[currentFrame];
+	Vector2 CatmullRomSpline(float alpha, KeyFrame[] p)
+	{
+		float tj(Vector2 a, Vector2 b) {
+			var x = 1.0f;
+			return Mathf.Pow( Mathf.Pow(b.x-a.x, 2) + Mathf.Pow(b.y-a.y, 2), x / 2 );
+		}
 
-            float alpha = (now - a.timestamp) / (b.timestamp - a.timestamp);
-            transform.position = Vector2.Lerp(a.position, b.position, float.IsNaN(alpha) ? 0.0f : alpha);
-            transform.rotation = Quaternion.Lerp(Quaternion.Euler(a.rotation), Quaternion.Euler(a.rotation), alpha);
-        }
-    }
+		float[] t = new float[4];
+		for (int i = 0; i < 3; i++)
+			t[i+1] = tj(p[i].position, p[i+1].position) + t[i];
+
+		var s = Mathf.Lerp(t[1], t[2], alpha);
+		float coef1, coef2;
+		{
+			Vector2[] A = new Vector2[3];
+			for (int i = 0; i < 3; i++)
+			{
+				coef1 = (t[i+1] - s) / (t[i+1] - t[i]);
+				coef2 = (s - t[i]) / (t[i+1] - t[i]);
+				A[i] = coef1*p[i].position + coef2*p[i+1].position;
+			}
+
+			Vector2[] B = new Vector2[2];
+			for (int i = 0; i < 2; i++)
+			{
+				coef1 = (t[i+2] - s) / (t[i+2] - t[i]);
+				coef2 = (s - t[i]) / (t[i+2] - t[i]);
+				B[i] = coef1*A[i] + coef2*A[i+1];
+			}
+
+			coef1 = (t[2] - s) / (t[2] - t[1]);
+			coef2 = (s - t[1]) / (t[2] - t[1]);
+			Vector2 C = coef1*B[0] + coef2*B[1];
+
+			return C;
+		}
+	}
+
+	void Update()
+	{
+		if (!replayMotion)
+			return;
+
+		if (!replaying)
+		{
+			Vector2 position = transform.position;
+			Vector3 rotation = transform.rotation.eulerAngles;
+
+			Vector2 movement = position - lastPosition;
+			float speed = movement.magnitude;
+			if (speed < 0.05f)
+				return;
+
+			Vector2 currentDirection = movement / speed;
+			float aligmment = Vector2.Dot(currentDirection, lastSavedDirection);
+			float speedDiff = Mathf.Abs(speed - lastSavedSpeed);
+			if (aligmment < 1.0f - angleTolerance)
+			{
+				AddFrame(position, rotation);
+
+				lastSavedDirection = currentDirection;
+				lastSavedSpeed = speed;
+			}
+
+			lastPosition = transform.position;
+		}
+		else
+		{
+			float lastFrame = frames.Count - (catmullRomSpline ? 1 : 0);
+			if (currentFrame >= lastFrame)
+				return;
+
+			float now = Time.time - refTime;
+			if (now > frames[currentFrame].timestamp)
+				currentFrame++;
+
+			if (currentFrame >= lastFrame)
+			{
+				Instantiate(explosion, transform.position, transform.rotation);
+				GameObject.Destroy(gameObject);
+				replayMotion = false;
+				return;
+			}
+
+			KeyFrame a = frames[currentFrame - 1];
+			KeyFrame b = frames[currentFrame];
+
+			float alpha = (now - a.timestamp) / (b.timestamp - a.timestamp);
+
+			if (catmullRomSpline)
+			{
+				transform.position = CatmullRomSpline(alpha, new KeyFrame[]
+				{
+					frames[currentFrame - 2],
+					a, b,
+					frames[currentFrame + 1]
+				});
+			}
+			else
+			{
+				transform.position = Vector2.Lerp(a.position, b.position, float.IsNaN(alpha) ? 0.0f : alpha);
+				transform.rotation = Quaternion.Lerp(Quaternion.Euler(a.rotation), Quaternion.Euler(a.rotation), alpha);
+			}
+		}
+	}
+
+	void AddFrame(Vector2 position, Vector3 rotation)
+	{
+		if (debugView)
+			Debug.DrawLine(frames[frames.Count - 1].position, position, Color.blue, 1000);
+
+		frames.Add(new KeyFrame()
+		{
+			timestamp = Time.time - refTime,
+			position = position,
+			rotation = rotation
+		});
+	}
 
 
-    public void Loop()
-    {
-        //Debug.Log(frames.Count);
+	public void Loop()
+	{
+		// Save last position
+		AddFrame(transform.position, transform.rotation.eulerAngles);
 
-        refTime = Time.time;
-        replaying = true;
-        currentFrame = 1;
+		// Padd frames for catmull rom
+		if (catmullRomSpline)
+		{
+			frames.Insert(0, frames[0].Sub(frames[1]));
+			frames.Add(frames[frames.Count - 1].Add(frames[frames.Count - 2]));
+		}
 
-        Destroy(GetComponent<Rigidbody>());
+		Destroy(GetComponent<Rigidbody>());
 
-        transform.position = frames[0].position;
-        transform.rotation = Quaternion.Euler(frames[0].rotation);
+		// Disable movement script
+		var mobAIScript = GetComponent<MobAI>();
+		if (mobAIScript != null)
+			mobAIScript.enabled = false;
 
-        var mobAIScript = GetComponent<MobAI>();
-        if (mobAIScript != null)
-            mobAIScript.enabled = false;
-    }
+		// Reset
+		transform.position = frames[0].position;
+		transform.rotation = Quaternion.Euler(frames[0].rotation);
+
+		refTime = Time.time;
+		replaying = true;
+		currentFrame = catmullRomSpline ? 2 : 1;
+	}
 }
