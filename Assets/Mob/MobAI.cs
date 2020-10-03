@@ -11,17 +11,14 @@ public class MobAI : MonoBehaviour
     public Direction direction = Direction.Left;
     public float speed = 2.0f;
 
-    int collideLayers;
-    int groundLayers;
+    public LayerMask collideLayers;
+    public LayerMask groundLayers;
     Vector2 extents;
     Rigidbody2D rb;
     bool wasOnGround;
 
     void Start()
     {
-        collideLayers = LayerMask.NameToLayer("Ground") | LayerMask.NameToLayer("Mob");
-        groundLayers = LayerMask.NameToLayer("Ground");
-
         rb = GetComponent<Rigidbody2D>();
         foreach (var collider in GetComponents<BoxCollider2D>())
         {
@@ -41,14 +38,14 @@ public class MobAI : MonoBehaviour
         Vector2 raycast = (Vector2)transform.position - extents.x * offset;
         Debug.DrawRay(raycast, Vector2.down);
 
-        var result = Physics2D.Raycast(raycast, Vector2.down, Mathf.Infinity, 1 << groundLayers);
+        var result = Physics2D.Raycast(raycast, Vector2.down, Mathf.Infinity, groundLayers);
         if (result.collider != null && result.distance <= extents.y + 0.05f)
             return true;
         
         raycast = (Vector2)transform.position + extents.x * offset;
         Debug.DrawRay(raycast, Vector2.down);
 
-        result = Physics2D.Raycast(raycast, Vector2.down, Mathf.Infinity, 1 << groundLayers);
+        result = Physics2D.Raycast(raycast, Vector2.down, Mathf.Infinity, groundLayers);
         return (result.collider != null && result.distance <= extents.y + 0.05f);
     }
 

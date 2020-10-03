@@ -51,6 +51,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   direction: 1
   speed: 4
+  collideLayers:
+    serializedVersion: 2
+    m_Bits: 768
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &7205063990971924045
 MonoBehaviour:
   m_ObjectHideFlags: 0

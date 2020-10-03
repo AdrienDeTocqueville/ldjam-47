@@ -35,13 +35,16 @@ public class PlayerMovements : MonoBehaviour
 			jump = true;
 		}
         
+		/*
 		if (player.GetButtonDown("Crouch"))
 		{
 			crouch = true;
-		} else if (player.GetButtonUp("Crouch"))
+		}
+		else if (player.GetButtonUp("Crouch"))
 		{
 			crouch = false;
 		}
+		*/
 	}
 
 	void FixedUpdate ()
