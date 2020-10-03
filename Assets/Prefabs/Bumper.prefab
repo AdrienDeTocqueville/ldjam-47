@@ -246,8 +246,8 @@ AreaEffector2D:
     serializedVersion: 2
     m_Bits: 4294967295
   m_UseGlobalAngle: 0
-  m_ForceAngle: 90
-  m_ForceMagnitude: 1000
+  m_ForceAngle: 0
+  m_ForceMagnitude: 0
   m_ForceVariation: 0
   m_ForceTarget: 0
   m_Drag: 0
@@ -264,3 +264,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 257ab12abd021af4fb4ee881ed8f8c75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  forceAngle: 90
+  magnitude: 1000
