@@ -13,6 +13,7 @@ public class PlatformMoving : MonoBehaviour
 
     bool movingToTarget;
     private GameObject target=null;
+    public bool isActivated = true;
 
 
     void Start()
@@ -24,35 +25,38 @@ public class PlatformMoving : MonoBehaviour
     }
     void FixedUpdate()
     {
-         float step = speed * Time.deltaTime;
+        if(isActivated)
+        {
+            float step = speed * Time.deltaTime;
 
-         if (transform.position == targetObject.transform.position)
-         {
-             movingToTarget = false;
-         }
-         else if (transform.position == startPos)
-         {
-             movingToTarget = true;
-         }
-         if(movingToTarget == false)
-         {
-             transform.position = Vector3.MoveTowards (transform.position, startPos, step);
-         }
-         else if (movingToTarget)
-         {
-             transform.position = Vector3.MoveTowards(transform.position, targetObject.transform.position, step);
-         }
+            if (transform.position == targetObject.transform.position)
+            {
+                movingToTarget = false;
+            }
+            else if (transform.position == startPos)
+            {
+                movingToTarget = true;
+            }
+            if(movingToTarget == false)
+            {
+                transform.position = Vector3.MoveTowards (transform.position, startPos, step);
+            }
+            else if (movingToTarget)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, targetObject.transform.position, step);
+            }
+        }
 
     }
      void OnCollisionEnter2D(Collision2D other){
-     if (other.gameObject.CompareTag( "Player")) {
+     if (other.gameObject.CompareTag("Player")) {
          other.transform.parent = transform;
      }
     }
     
     
     void OnCollisionExit2D(Collision2D other){
-        if (other.gameObject.CompareTag( "Player")) {
+        if (other.gameObject.CompareTag("Player")) {
             other.transform.parent = null;
         }
     }
