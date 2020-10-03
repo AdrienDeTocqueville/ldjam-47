@@ -145,8 +145,7 @@ public class MotionLooper : MonoBehaviour
 				// Explode
 				var e = Instantiate(explosion, transform.position, transform.rotation);
 				Object.Destroy(e, 1.2f);
-				GameObject.Destroy(gameObject);
-				replayMotion = false;
+				gameObject.SetActive(false);
 				return;
 			}
 
@@ -188,22 +187,25 @@ public class MotionLooper : MonoBehaviour
 
 	public void Loop()
 	{
-		// Save last position
-		AddFrame(transform.position, transform.rotation.eulerAngles);
+		if (replayMotion && !replaying)
+        {
+			// Save last position
+			AddFrame(transform.position, transform.rotation.eulerAngles);
 
-		// Padd frames for catmull rom
-		if (catmullRomSpline)
-		{
-			frames.Insert(0, frames[0].Sub(frames[1]));
-			frames.Add(frames[frames.Count - 1].Add(frames[frames.Count - 2]));
-		}
+			// Padd frames for catmull rom
+			if (catmullRomSpline)
+			{
+				frames.Insert(0, frames[0].Sub(frames[1]));
+				frames.Add(frames[frames.Count - 1].Add(frames[frames.Count - 2]));
+			}
+			
+			Destroy(GetComponent<Rigidbody>());
 
-		Destroy(GetComponent<Rigidbody>());
-
-		// Disable movement script
-		var mobAIScript = GetComponent<MobAI>();
-		if (mobAIScript != null)
-			mobAIScript.enabled = false;
+			// Disable movement script
+			var mobAIScript = GetComponent<MobAI>();
+			if (mobAIScript != null)
+				mobAIScript.enabled = false;
+        }
 
 		// Reset
 		transform.position = frames[0].position;

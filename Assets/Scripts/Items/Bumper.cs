@@ -18,14 +18,17 @@ public class Bumper : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        other.gameObject.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
-        other.gameObject.GetComponent<Rigidbody2D>().angularVelocity = 0.0f;
+        Rigidbody2D rb = other.gameObject.GetComponent<Rigidbody2D>();
+        Vector2 v = rb.velocity;
+
+        v.y = 0.0f;
+        rb.velocity = v;
+        rb.angularVelocity = 0.0f;
     }
 
     public void ChangeBoostAngle(float angle)
     {
         effector2D.forceAngle = angle;
-        Debug.Log("angle = " + angle);
     }
     public void ChangeBoostMagnitude(float power)
     {
