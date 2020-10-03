@@ -19,8 +19,8 @@ public class MobAI : MonoBehaviour
 
     void Start()
     {
-        collideLayers = LayerMask.NameToLayer("Terrain") | LayerMask.NameToLayer("Mob");
-        groundLayers = LayerMask.NameToLayer("Terrain");
+        collideLayers = LayerMask.NameToLayer("Ground") | LayerMask.NameToLayer("Mob");
+        groundLayers = LayerMask.NameToLayer("Ground");
 
         rb = GetComponent<Rigidbody2D>();
         foreach (var collider in GetComponents<BoxCollider2D>())

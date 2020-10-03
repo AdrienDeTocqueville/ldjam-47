@@ -142,7 +142,9 @@ public class MotionLooper : MonoBehaviour
 
 			if (currentFrame >= lastFrame)
 			{
-				Instantiate(explosion, transform.position, transform.rotation);
+				// Explode
+				var e = Instantiate(explosion, transform.position, transform.rotation);
+				Object.Destroy(e, 1.2f);
 				GameObject.Destroy(gameObject);
 				replayMotion = false;
 				return;

@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 7413831345650108103}
   - component: {fileID: 7413831345650108102}
   - component: {fileID: 7413831345650108099}
-  m_Layer: 10
+  m_Layer: 8
   m_Name: Platform
   m_TagString: Platform
   m_Icon: {fileID: 0}
@@ -248,6 +248,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetObject: {fileID: 7413831345147857484}
   speed: 1
+  isActivated: 1
 --- !u!1 &7413831346491671422
 GameObject:
   m_ObjectHideFlags: 0
