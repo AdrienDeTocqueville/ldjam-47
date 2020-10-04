@@ -19,9 +19,13 @@ public class CharacterController2D : MonoBehaviour
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 	private Vector3 velocity = Vector3.zero;
 
+	new SpriteRenderer renderer = null;
+	int isAgainstWall = 0;
+
 	private void Awake()
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
+		renderer = GetComponent<SpriteRenderer>();
 	}
 
 
@@ -37,6 +41,8 @@ public class CharacterController2D : MonoBehaviour
 			if (colliders[i].gameObject != gameObject)
 				m_Grounded = true;
 		}
+
+		renderer.color = new Color(m_Grounded ? 1: 0, isAgainstWall == 0 ? 1: 0, 1);
 	}
 
 
@@ -53,9 +59,8 @@ public class CharacterController2D : MonoBehaviour
 		}
 
 		//only control the player if grounded or airControl is turned on
-		if (m_Grounded || m_AirControl)
+		if ((m_Grounded || m_AirControl) && (m_Grounded || isAgainstWall == 0))
 		{
-
 			// If crouching
 			if (crouch)
 			{
@@ -90,6 +95,7 @@ public class CharacterController2D : MonoBehaviour
 				Flip();
 			}
 		}
+
 		// If the player should jump...
 		if (m_Grounded && jump)
 		{
@@ -110,4 +116,17 @@ public class CharacterController2D : MonoBehaviour
 		theScale.x *= -1;
 		transform.localScale = theScale;
 	}
+
+	
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (((1<<collision.gameObject.layer) & m_WhatIsGround) != 0)
+            isAgainstWall++;
+    }
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        if (((1<<collision.gameObject.layer) & m_WhatIsGround) != 0)
+            isAgainstWall--;
+    }
 }
