@@ -11,7 +11,6 @@ public class PlayerAttack : MonoBehaviour{
 
     public Transform attackPos;
     public LayerMask whatIsEnemies;
-    public Animator camAnim;
     public float attackRange;
     public int damage;
 
@@ -20,7 +19,7 @@ public class PlayerAttack : MonoBehaviour{
         if (timeBtwAttack <= 0){
             //Possibilité d'attaquer
             if(Input.GetKey(KeyCode.A)) {
-                camAnim.SetTrigger("shake");
+                Camera.main.GetComponent<CameraShaker>().Shake();
                 Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemies);
                 for (int i = 0; i < enemiesToDamage.Length; i++){
                     enemiesToDamage[i].GetComponent<Enemy>().TakeDamage(damage);
