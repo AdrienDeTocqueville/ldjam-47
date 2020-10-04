@@ -2,7 +2,6 @@
 
 public class CharacterController2D : MonoBehaviour
 {
-    
 	[SerializeField] private float m_JumpForce = 400f;							// Amount of force added when the player jumps.
 	[Range(0, 1)] [SerializeField] private float m_CrouchSpeed = .36f;			// Amount of maxSpeed applied to crouching movement. 1 = 100%
 	[Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;	// How much to smooth out the movement
@@ -59,7 +58,7 @@ public class CharacterController2D : MonoBehaviour
 		}
 
 		//only control the player if grounded or airControl is turned on
-		if ((m_Grounded || m_AirControl) && (m_Grounded || isAgainstWall == 0))
+		if ((m_Grounded || m_AirControl))
 		{
 			// If crouching
 			if (crouch)
@@ -77,22 +76,18 @@ public class CharacterController2D : MonoBehaviour
 					m_CrouchDisableCollider.enabled = true;
 			}
 
-			// Move the character by finding the target velocity
-			Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
-			// And then smoothing it out and applying it to the character
-			m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref velocity, m_MovementSmoothing);
-
 			// If the input is moving the player right and the player is facing left...
 			if (move > 0 && !m_FacingRight)
-			{
-				// ... flip the player.
 				Flip();
-			}
 			// Otherwise if the input is moving the player left and the player is facing right...
 			else if (move < 0 && m_FacingRight)
-			{
-				// ... flip the player.
 				Flip();
+			else if (m_Grounded || isAgainstWall == 0)
+			{
+				// Move the character by finding the target velocity
+				Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
+				// And then smoothing it out and applying it to the character
+				m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref velocity, m_MovementSmoothing);
 			}
 		}
 
@@ -119,14 +114,15 @@ public class CharacterController2D : MonoBehaviour
 
 	
 
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (((1<<collision.gameObject.layer) & m_WhatIsGround) != 0)
-            isAgainstWall++;
-    }
-    void OnTriggerExit2D(Collider2D collision)
-    {
-        if (((1<<collision.gameObject.layer) & m_WhatIsGround) != 0)
-            isAgainstWall--;
-    }
+	void OnTriggerEnter2D(Collider2D collision)
+	{
+		if (((1<<collision.gameObject.layer) & m_WhatIsGround) != 0)
+			isAgainstWall++;
+	}
+
+	void OnTriggerExit2D(Collider2D collision)
+	{
+		if (((1<<collision.gameObject.layer) & m_WhatIsGround) != 0)
+			isAgainstWall--;
+	}
 }

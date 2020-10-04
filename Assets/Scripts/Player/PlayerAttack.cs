@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 public class PlayerAttack : MonoBehaviour
 {
@@ -15,10 +16,25 @@ public class PlayerAttack : MonoBehaviour
 
     private float timeSinceAttack = 0.0f;
 
+    Vector2 intialPosition;
+    Quaternion intialRotation;
+
+    private void Awake()
+    {
+        intialPosition = transform.position;
+        intialRotation = transform.rotation;
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
+            // Reset Player state to initial
+            transform.position = intialPosition;
+            transform.rotation = intialRotation;
+
+            timeSinceAttack = 0.0f;
+
             var loopers = GameObject.FindObjectsOfType<MotionLooper>();
             foreach (var looper in loopers)
             {

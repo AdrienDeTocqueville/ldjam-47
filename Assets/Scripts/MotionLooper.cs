@@ -186,29 +186,28 @@ public class MotionLooper : MonoBehaviour
 		});
 	}
 
-    private void Disable()
-    {
-		Destroy(GetComponent<Rigidbody2D>());
+	private void Disable()
+	{
 		foreach (var collider in GetComponents<Collider2D>())
 			collider.enabled = false;
 		foreach (var renderer in GetComponents<SpriteRenderer>())
 			renderer.enabled = false;
 	
 		state = State.Stop;
-    }
+	}
 
-    private void Enable()
-    {
+	private void Enable()
+	{
 		foreach (var collider in GetComponents<Collider2D>())
 			collider.enabled = true;
 		foreach (var renderer in GetComponents<SpriteRenderer>())
 			renderer.enabled = true;
 	
 		state = State.Replay;
-    }
+	}
 
 
-    public void StopRecord()
+	public void StopRecord()
 	{
 		if (replayMotion && state == State.Record)
 		{
@@ -234,6 +233,7 @@ public class MotionLooper : MonoBehaviour
 
 	public void Loop()
 	{
+		Destroy(GetComponent<Rigidbody2D>());
 		StopRecord();
 		Enable();
 
