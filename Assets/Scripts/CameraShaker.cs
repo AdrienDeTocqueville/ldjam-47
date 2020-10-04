@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class CameraShaker : MonoBehaviour
 {
-
 	Vector3 cameraInitialPosition;
 	public float shakeMagnetude = 0.05f, shakeTime = 0.5f;
-	public Camera mainCamera;
 
 	public void Shake()
 	{
-		cameraInitialPosition = mainCamera.transform.position;
+		cameraInitialPosition = transform.position;
 		InvokeRepeating("StartCameraShaking", 0f, 0.005f);
 		Invoke("StopCameraShaking", shakeTime);
 	}
@@ -20,16 +18,16 @@ public class CameraShaker : MonoBehaviour
 	{
 		float cameraShakingOffsetX = Random.value * shakeMagnetude * 2 - shakeMagnetude;
 		float cameraShakingOffsetY = Random.value * shakeMagnetude * 2 - shakeMagnetude;
-		Vector3 cameraIntermadiatePosition = mainCamera.transform.position;
+		Vector3 cameraIntermadiatePosition = transform.position;
 		cameraIntermadiatePosition.x += cameraShakingOffsetX;
 		cameraIntermadiatePosition.y += cameraShakingOffsetY;
-		mainCamera.transform.position = cameraIntermadiatePosition;
+		transform.position = cameraIntermadiatePosition;
 	}
 
 	void StopCameraShaking()
 	{
 		CancelInvoke("StartCameraShaking");
-		mainCamera.transform.position = cameraInitialPosition;
+		transform.position = cameraInitialPosition;
 	}
 
 }

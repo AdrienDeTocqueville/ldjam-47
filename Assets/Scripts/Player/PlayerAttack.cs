@@ -16,14 +16,19 @@ public class PlayerAttack : MonoBehaviour{
 
     void Update(){
 
-        if (timeBtwAttack <= 0){
-            //Possibilité d'attaquer
-            if(Input.GetKey(KeyCode.A)) {
-                Camera.main.GetComponent<CameraShaker>().Shake();
+        if (timeBtwAttack <= 0)
+        {
+            if (Input.GetKey(KeyCode.A))
+            {
                 Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemies);
-                for (int i = 0; i < enemiesToDamage.Length; i++){
+
+                // Shake camera
+                Debug.Log (enemiesToDamage.Length);
+                    Camera.main.GetComponent<CameraShaker>().Shake();
+
+                // Damage enemies
+                for (int i = 0; i < enemiesToDamage.Length; i++)
                     enemiesToDamage[i].GetComponent<Enemy>().TakeDamage(damage);
-                }            
             }
 
             timeBtwAttack = startTimeBtwAttack;
@@ -32,10 +37,9 @@ public class PlayerAttack : MonoBehaviour{
         }
     }
 
-    void OnDrawGizmosSelected(){
+    void OnDrawGizmosSelected()
+    {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPos.position, attackRange);
-
     }
-
 }
