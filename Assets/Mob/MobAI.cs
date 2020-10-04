@@ -75,15 +75,6 @@ public class MobAI : MonoBehaviour
             v.x = speed * (direction == Direction.Left ? -1 : 1);
             rb.velocity = v;
         }
-
-        if (Input.GetKeyDown("e"))
-        {
-            var loopers = GameObject.FindObjectsOfType<MotionLooper>();
-            foreach (var looper in loopers)
-            {
-                looper.Loop();
-            }
-        }
     }
 
     void OnTriggerEnter2D(Collider2D collision)

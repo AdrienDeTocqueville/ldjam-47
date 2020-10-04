@@ -12,7 +12,13 @@ public class Enemy : MonoBehaviour
         Instantiate(dust, transform.position, Quaternion.identity);
 
         if (vie <= 0)
-            Destroy(gameObject);
+        {
+            var script = GetComponent<MotionLooper>();
+            if (script)
+                script.StopRecord();
+            else
+                Destroy(gameObject);
+        }
         else
         {
             var script = GetComponent<MobAI>();

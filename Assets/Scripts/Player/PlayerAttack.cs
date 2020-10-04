@@ -17,6 +17,16 @@ public class PlayerAttack : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            var loopers = GameObject.FindObjectsOfType<MotionLooper>();
+            foreach (var looper in loopers)
+            {
+                looper.Loop();
+            }
+        }
+
+
         if (Input.GetKey(KeyCode.A) && timeSinceAttack <= 0)
         {
             timeSinceAttack = attackCooldown;

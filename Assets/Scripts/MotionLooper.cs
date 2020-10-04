@@ -32,8 +32,10 @@ public class MotionLooper : MonoBehaviour
 		}
 	}
 
+	enum State { Record, Stop, Replay };
+
 	List<KeyFrame> frames;
-	bool replaying = false;
+	State state = State.Record;
 	float refTime;
 	int currentFrame;
 
@@ -104,10 +106,10 @@ public class MotionLooper : MonoBehaviour
 
 	void Update()
 	{
-		if (!replayMotion)
+		if (!replayMotion || state == State.Stop)
 			return;
 
-		if (!replaying)
+		if (state == State.Record)
 		{
 			Vector2 position = transform.position;
 			Vector3 rotation = transform.rotation.eulerAngles;
@@ -145,7 +147,7 @@ public class MotionLooper : MonoBehaviour
 				// Explode
 				var e = Instantiate(explosion, transform.position, transform.rotation);
 				Object.Destroy(e, 1.2f);
-				gameObject.SetActive(false);
+				Disable();
 				return;
 			}
 
@@ -184,10 +186,31 @@ public class MotionLooper : MonoBehaviour
 		});
 	}
 
+    private void Disable()
+    {
+		Destroy(GetComponent<Rigidbody2D>());
+		foreach (var collider in GetComponents<Collider2D>())
+			collider.enabled = false;
+		foreach (var renderer in GetComponents<SpriteRenderer>())
+			renderer.enabled = false;
+	
+		state = State.Stop;
+    }
 
-	public void Loop()
+    private void Enable()
+    {
+		foreach (var collider in GetComponents<Collider2D>())
+			collider.enabled = true;
+		foreach (var renderer in GetComponents<SpriteRenderer>())
+			renderer.enabled = true;
+	
+		state = State.Replay;
+    }
+
+
+    public void StopRecord()
 	{
-		if (replayMotion && !replaying)
+		if (replayMotion && state == State.Record)
 		{
 			// Save last position
 			AddFrame(transform.position, transform.rotation.eulerAngles);
@@ -198,21 +221,27 @@ public class MotionLooper : MonoBehaviour
 				frames.Insert(0, frames[0].Sub(frames[1]));
 				frames.Add(frames[frames.Count - 1].Add(frames[frames.Count - 2]));
 			}
-			
-			Destroy(GetComponent<Rigidbody>());
 
 			// Disable movement script
 			var mobAIScript = GetComponent<MobAI>();
 			if (mobAIScript != null)
 				mobAIScript.enabled = false;
+
+			Disable();
 		}
+	}
+
+
+	public void Loop()
+	{
+		StopRecord();
+		Enable();
 
 		// Reset
 		transform.position = frames[0].position;
 		transform.rotation = Quaternion.Euler(frames[0].rotation);
 
 		refTime = Time.time;
-		replaying = true;
 		currentFrame = catmullRomSpline ? 2 : 1;
 	}
 }
