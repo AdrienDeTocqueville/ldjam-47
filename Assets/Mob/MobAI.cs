@@ -81,7 +81,7 @@ public class MobAI : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        //if ((collision.gameObject.layer & collideLayers) != 0)
+        if ((collision.gameObject.layer & collideLayers) != 0)
             Switcheroo(1 - direction);
     }
 

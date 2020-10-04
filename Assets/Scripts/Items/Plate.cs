@@ -5,6 +5,7 @@ using UnityEngine;
 public class Plate : MonoBehaviour
 {
     public List<Activable> activations = new List<Activable>();
+    int counter = 0;
 
     private void Awake()
     {
@@ -14,13 +15,17 @@ public class Plate : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        foreach (var a in activations)
-            a.Activate();
+        if (counter == 0)
+            foreach (var a in activations)
+                a.Activate();
+        counter++;
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
-        foreach (var a in activations)
-            a.Deactivate();
+        counter--;
+        if (counter == 0)
+            foreach (var a in activations)
+                a.Deactivate();
     }
 }

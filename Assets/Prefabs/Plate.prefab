@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8487886266116468991}
   - component: {fileID: 7436409839180957826}
   - component: {fileID: 3967243791183314036}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Plate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,3 +121,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e21f35ef0d5560c498da0c58bea0d9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activations: []
