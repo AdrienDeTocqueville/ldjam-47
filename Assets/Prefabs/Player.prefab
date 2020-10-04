@@ -203,12 +203,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23b0a297743d29340aa160d00c065998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startTimeBtwAttack: 0.5
+  attackCooldown: 0.5
   attackPos: {fileID: 1537159164}
   whatIsEnemies:
     serializedVersion: 2
     m_Bits: 512
-  camAnim: {fileID: 0}
   attackRange: 0.8
   damage: 50
 --- !u!1 &6576528957306862641
