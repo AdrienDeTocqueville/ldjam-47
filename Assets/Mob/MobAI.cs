@@ -17,6 +17,8 @@ public class MobAI : MonoBehaviour
     Rigidbody2D rb;
     bool wasOnGround;
 
+    float frozen = 0.0f;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -51,6 +53,9 @@ public class MobAI : MonoBehaviour
 
     void Update()
     {
+        if (frozen >= 0.0f)
+            frozen -= Time.deltaTime;
+
         // Only move if touching the ground
         if (IsOnGround())
         {
@@ -59,7 +64,9 @@ public class MobAI : MonoBehaviour
                 wasOnGround = true;
                 rb.velocity = Vector2.zero;
             }
-            transform.Translate(speed * Time.deltaTime, 0, 0);
+            
+            if (frozen <= 0.0f)
+                transform.Translate(speed * Time.deltaTime, 0, 0);
         }
         else if (wasOnGround)
         {
@@ -81,7 +88,7 @@ public class MobAI : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if ((collision.gameObject.layer & collideLayers) != 0)
+        if (((1<<collision.gameObject.layer) & collideLayers) != 0)
             Switcheroo(1 - direction);
     }
 
@@ -93,5 +100,10 @@ public class MobAI : MonoBehaviour
         var angles = transform.rotation.eulerAngles;
         angles.y = (direction == Direction.Left) ? 180.0f : 0.0f;
         transform.rotation = Quaternion.Euler(angles);
+    }
+
+    public void Freeze(float freezeTime)
+    {
+        frozen = freezeTime;
     }
 }

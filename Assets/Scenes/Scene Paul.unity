@@ -128,6 +128,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1167148766, guid: 3b884a83b5078cc4a81fd258375cfee1, type: 3}
+      propertyPath: camAnim
+      value: 
+      objectReference: {fileID: 2092094371}
     - target: {fileID: 6576528956820685126, guid: 3b884a83b5078cc4a81fd258375cfee1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -264,38 +268,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1bbb7b05c4b2d5f49a2f7f8001ed4b12, type: 3}
---- !u!1 &1167148759 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6576528956820685147, guid: 3b884a83b5078cc4a81fd258375cfee1,
-    type: 3}
-  m_PrefabInstance: {fileID: 259858452}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1167148765 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6576528956820685126, guid: 3b884a83b5078cc4a81fd258375cfee1,
-    type: 3}
-  m_PrefabInstance: {fileID: 259858452}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1167148766
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1167148759}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23b0a297743d29340aa160d00c065998, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startTimeBtwAttack: 0.5
-  attackPos: {fileID: 1537159164}
-  whatIsEnemies:
-    serializedVersion: 2
-    m_Bits: 512
-  camAnim: {fileID: 2092094371}
-  attackRange: 0.8
-  damage: 50
 --- !u!1 &1483873602
 GameObject:
   m_ObjectHideFlags: 0
@@ -325,36 +297,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1537159163
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1537159164}
-  m_Layer: 0
-  m_Name: AttackPos
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1537159164
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1537159163}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.16498898, y: 0, z: -0.10902971}
-  m_LocalScale: {x: 0.16498898, y: 0.16498898, z: 0.16498898}
-  m_Children: []
-  m_Father: {fileID: 1167148765}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1658715868
 PrefabInstance:
@@ -626,3 +568,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vie: 100
+  freezeTime: 0.3

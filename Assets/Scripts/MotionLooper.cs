@@ -188,7 +188,7 @@ public class MotionLooper : MonoBehaviour
 	public void Loop()
 	{
 		if (replayMotion && !replaying)
-        {
+		{
 			// Save last position
 			AddFrame(transform.position, transform.rotation.eulerAngles);
 
@@ -205,7 +205,7 @@ public class MotionLooper : MonoBehaviour
 			var mobAIScript = GetComponent<MobAI>();
 			if (mobAIScript != null)
 				mobAIScript.enabled = false;
-        }
+		}
 
 		// Reset
 		transform.position = frames[0].position;
