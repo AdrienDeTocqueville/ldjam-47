@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5994248900330208633}
   - component: {fileID: 782141161085738589}
   - component: {fileID: 6590123219123741380}
-  - component: {fileID: 5702867814070611520}
   m_Layer: 0
   m_Name: DustSplash
   m_TagString: Untagged
@@ -4813,15 +4812,3 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
---- !u!114 &5702867814070611520
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4436911161699217921}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b789193e1b25e94f903ea6918a19649, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

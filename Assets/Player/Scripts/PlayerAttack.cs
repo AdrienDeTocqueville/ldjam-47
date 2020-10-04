@@ -34,7 +34,7 @@ public class PlayerAttack : MonoBehaviour
 
     void Update()
     {
-        if (reinput.GetButtonDown("Reset"))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             // Reset Player state to initial
             transform.position = intialPosition;
@@ -50,9 +50,10 @@ public class PlayerAttack : MonoBehaviour
         }
 
 
-        if (reinput.GetButtonDown("Attack") && timeSinceAttack <= 0)
+        if (Input.GetKey(KeyCode.A) && timeSinceAttack <= 0)
         {
             timeSinceAttack = attackCooldown;
+            animator.SetTrigger("attack");
 
             Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemies);
             if (enemiesToDamage.Length == 0)

@@ -21,10 +21,13 @@ public class CharacterController2D : MonoBehaviour
 	new SpriteRenderer renderer = null;
 	int isAgainstWall = 0;
 
+	Animator animator;
+
 	private void Awake()
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
 		renderer = GetComponent<SpriteRenderer>();
+		animator = GetComponent<Animator>();
 	}
 
 
@@ -47,6 +50,8 @@ public class CharacterController2D : MonoBehaviour
 
 	public void Move(float move, bool crouch, bool jump)
 	{
+		animator.SetBool("grounded", m_Grounded);
+
 		// If crouching, check to see if the character can stand up
 		if (!crouch)
 		{
@@ -88,16 +93,17 @@ public class CharacterController2D : MonoBehaviour
 				Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
 				// And then smoothing it out and applying it to the character
 				m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref velocity, m_MovementSmoothing);
+				// Animation transition
+				animator.SetBool("moving", move != 0.0f);
 			}
 		}
 
 		// If the player should jump...
 		if (m_Grounded && jump)
 		{
-			
 			Vector2 v = m_Rigidbody2D.velocity;
-
 			v.y = 0.0f;
+
 			m_Rigidbody2D.velocity = v;
 			m_Rigidbody2D.angularVelocity = 0.0f;
 			// Add a vertical force to the player.

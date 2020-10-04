@@ -9,7 +9,9 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(int damage)
     {
         vie -= damage;
-        Instantiate(dust, transform.position, Quaternion.identity);
+
+        var d = Instantiate(dust, transform.position, Quaternion.identity);
+		Object.Destroy(d, 2f);
 
         if (vie <= 0)
         {
