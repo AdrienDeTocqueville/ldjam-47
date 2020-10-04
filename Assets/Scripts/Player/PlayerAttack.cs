@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
+using Rewired;
 
 public class PlayerAttack : MonoBehaviour
 {
@@ -18,16 +19,22 @@ public class PlayerAttack : MonoBehaviour
 
     Vector2 intialPosition;
     Quaternion intialRotation;
+    Animator animator;
+    Player reinput;
+
+    
 
     private void Awake()
     {
         intialPosition = transform.position;
         intialRotation = transform.rotation;
+        reinput = ReInput.players.GetPlayer(0);
+        animator = GetComponent<Animator>();
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (reinput.GetButtonDown("Reset"))
         {
             // Reset Player state to initial
             transform.position = intialPosition;
@@ -43,7 +50,7 @@ public class PlayerAttack : MonoBehaviour
         }
 
 
-        if (Input.GetKey(KeyCode.A) && timeSinceAttack <= 0)
+        if (reinput.GetButtonDown("Attack") && timeSinceAttack <= 0)
         {
             timeSinceAttack = attackCooldown;
 
@@ -66,7 +73,9 @@ public class PlayerAttack : MonoBehaviour
             if (hasHit) Camera.main.GetComponent<CameraShaker>().Shake();
         }
         else
+        {
             timeSinceAttack -= Time.deltaTime;
+        }
     }
 
     void OnDrawGizmosSelected()

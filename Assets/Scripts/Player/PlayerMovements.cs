@@ -8,6 +8,10 @@ public class PlayerMovements : MonoBehaviour
 
     CharacterController2D controller;
     Player player;
+    private Animator animator;
+    public Vector2 movement;
+
+
     
 	public float runSpeed = 40f;
 
@@ -16,35 +20,23 @@ public class PlayerMovements : MonoBehaviour
 	bool crouch = false;
     
 
-
-
     void Awake()
     {
         player = ReInput.players.GetPlayer(0);
         controller = gameObject.GetComponent<CharacterController2D>();
+        animator = GetComponent<Animator>();
     }
 
-	
-	// Update is called once per frame
 	void Update () {
 
 		horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
 
-		if (player.GetButtonDown("Jump"))
+		if (Input.GetButtonDown("Jump"))
 		{
 			jump = true;
 		}
-        
-		/*
-		if (player.GetButtonDown("Crouch"))
-		{
-			crouch = true;
-		}
-		else if (player.GetButtonUp("Crouch"))
-		{
-			crouch = false;
-		}
-		*/
+
+		Move();
 	}
 
 	void FixedUpdate ()
@@ -52,5 +44,18 @@ public class PlayerMovements : MonoBehaviour
 		// Move our character
 		controller.Move(horizontalMove * Time.fixedDeltaTime, crouch, jump);
 		jump = false;
+	}
+
+	void Move()
+	{
+		movement.x = player.GetAxis("Horizontal");
+
+		animator.SetFloat("moveX", movement.x);
+		animator.SetFloat("Speed", movement.sqrMagnitude);
+
+		if(movement.x >= 0.9 || movement.x <= -0.9)
+		{
+			animator.SetFloat("lastMoveX", movement.x);
+		}
 	}
 }
