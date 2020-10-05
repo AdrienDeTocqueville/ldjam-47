@@ -6,18 +6,17 @@ public class Plate : MonoBehaviour
 	public List<Activable> activations = new List<Activable>();
 	bool isPressed = false;
 
-	Vector2 rect;
+	public Vector2 rect;
 
 	private void Awake()
 	{
-		rect = GetComponent<BoxCollider2D>().size * transform.localScale;
 		if (activations.Count == 0)
 			Debug.LogError("This pressure plate has nothing to activate !");
 	}
 
 	public void Update()
 	{
-		var hits = Physics2D.BoxCastAll(transform.position, rect, 0, Vector2.up, 0.05f);
+		var hits = Physics2D.BoxCastAll(transform.position, rect * transform.localScale, 0, Vector2.up, 0.05f);
 		bool pressed = false;
 		foreach (var hit in hits)
 		{
