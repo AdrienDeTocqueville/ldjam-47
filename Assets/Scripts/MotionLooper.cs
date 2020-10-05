@@ -1,10 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Runtime.InteropServices;
-using UnityEditor.SceneManagement;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class MotionLooper : MonoBehaviour
 {

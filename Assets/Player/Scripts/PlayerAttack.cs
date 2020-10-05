@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using UnityEngine;
-using UnityEngine.Assertions.Must;
-using Rewired;
+﻿using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
@@ -17,25 +11,16 @@ public class PlayerAttack : MonoBehaviour
 
     private float timeSinceAttack = 0.0f;
 
-    Vector2 intialPosition;
-    Quaternion intialRotation;
     Animator animator;
-    Player reinput;
 
 
     private void Awake()
     {
-        intialPosition = transform.position;
-        intialRotation = transform.rotation;
-        reinput = ReInput.players.GetPlayer(0);
         animator = GetComponent<Animator>();
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-            ResetScene();
-
         if (Input.GetKey(KeyCode.A) && timeSinceAttack <= 0)
         {
             timeSinceAttack = attackCooldown;
@@ -65,30 +50,14 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
+    public void Loop()
+    {
+        timeSinceAttack = 0.0f;
+    }
+
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPos.position, attackRange);
-    }
-
-    void ResetScene()
-    {
-        // Reset Player state to initial
-        transform.position = intialPosition;
-        transform.rotation = intialRotation;
-
-        timeSinceAttack = 0.0f;
-
-	GetComponent<GrabBarrel>().Ungrab();
-
-        // Reset activable platforms
-        var activables = GameObject.FindObjectsOfType<Activable>();
-        foreach (var activable in activables)
-            activable.Loop();
-
-        // Loop mob movement
-        var loopers = GameObject.FindObjectsOfType<MotionLooper>();
-        foreach (var looper in loopers)
-            looper.Loop();
     }
 }

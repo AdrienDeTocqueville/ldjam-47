@@ -371,6 +371,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5796073209709318968, guid: c453588c8e8c1034c8f1e38f5f5767fc,
+        type: 3}
+      propertyPath: nextLevel
+      value: Assets/Scenes/Tuto3.unity
+      objectReference: {fileID: 0}
     - target: {fileID: 8831815481392724309, guid: c453588c8e8c1034c8f1e38f5f5767fc,
         type: 3}
       propertyPath: m_Name

@@ -18,7 +18,7 @@ public class CharacterController2D : MonoBehaviour
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 	private Vector3 velocity = Vector3.zero;
 
-	new SpriteRenderer renderer = null;
+	SpriteRenderer spriteRenderer = null;
 	int isAgainstWall = 0;
 
 	Animator animator;
@@ -26,7 +26,7 @@ public class CharacterController2D : MonoBehaviour
 	private void Awake()
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
-		renderer = GetComponent<SpriteRenderer>();
+		spriteRenderer = GetComponent<SpriteRenderer>();
 		animator = GetComponent<Animator>();
 	}
 
@@ -44,7 +44,9 @@ public class CharacterController2D : MonoBehaviour
 				m_Grounded = true;
 		}
 
-		renderer.color = new Color(m_Grounded ? 1: 0, isAgainstWall == 0 ? 1: 0, 1);
+#if UNITY_EDITOR
+		spriteRenderer.color = new Color(m_Grounded ? 1: 0, isAgainstWall == 0 ? 1: 0, 1);
+#endif
 	}
 
 

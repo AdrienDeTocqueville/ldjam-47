@@ -1,14 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Rewired;
+﻿using UnityEngine;
 
 public class PlayerMovements : MonoBehaviour
 {
 	public float runSpeed = 40f;
 
 	CharacterController2D controller;
-	Player player;
 
 	float horizontalMove = 0f;
 	bool jump = false;
@@ -16,7 +12,6 @@ public class PlayerMovements : MonoBehaviour
 
 	void Awake()
 	{
-		player = ReInput.players.GetPlayer(0);
 		controller = gameObject.GetComponent<CharacterController2D>();
 	}
 
