@@ -234,6 +234,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23b0a297743d29340aa160d00c065998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hp: 3
+  heart: {fileID: 6896927679475387002, guid: 821a24b6f32bc004a842dcf1da5349e4, type: 3}
   attackCooldown: 0.5
   attackPos: {fileID: 1537159164}
   whatIsEnemies:
@@ -284,7 +286,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44fe3da9602c47e499a872edcfdf5c4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstRun: 1
 --- !u!1 &6576528957306862641
 GameObject:
   m_ObjectHideFlags: 0

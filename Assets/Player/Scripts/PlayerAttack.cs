@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerAttack : MonoBehaviour
 {
+    public int hp = 3;
+    public GameObject heart;
     public float attackCooldown;
 
     public Transform attackPos;
@@ -13,10 +16,23 @@ public class PlayerAttack : MonoBehaviour
 
     Animator animator;
 
+    GameObject[] hearts;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        hearts = new GameObject[hp];
+        for (int i = 0; i < hp; i++)
+        {
+            var h = Instantiate(heart);
+            h.transform.parent = Camera.main.transform;
+
+            var pos = h.transform.localPosition;
+            pos.x += i * 1.5f;
+            h.transform.localPosition = pos;
+
+            hearts[i] = h;
+        }
     }
 
     void Update()
@@ -48,6 +64,14 @@ public class PlayerAttack : MonoBehaviour
         {
             timeSinceAttack -= Time.deltaTime;
         }
+    }
+    
+    public void Hit()
+    {
+        hp--;
+        Destroy(hearts[hp]);
+        if (hp == 0)
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
     }
 
     public void Loop()
