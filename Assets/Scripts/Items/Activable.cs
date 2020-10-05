@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 
 public class Activable : MonoBehaviour
@@ -34,6 +34,13 @@ public class Activable : MonoBehaviour
 
     public void Deactivate()
     {
+        activated = false;
+    }
+    
+    public void Loop()
+    {
+        transform.position = initial;
+        alpha = 0.0f;
         activated = false;
     }
 }
