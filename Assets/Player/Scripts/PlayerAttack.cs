@@ -22,7 +22,6 @@ public class PlayerAttack : MonoBehaviour
     Animator animator;
     Player reinput;
 
-    
 
     private void Awake()
     {
@@ -71,7 +70,7 @@ public class PlayerAttack : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPos.position, attackRange);
     }
-    
+
     void ResetScene()
     {
         // Reset Player state to initial
@@ -79,7 +78,9 @@ public class PlayerAttack : MonoBehaviour
         transform.rotation = intialRotation;
 
         timeSinceAttack = 0.0f;
-        
+
+	GetComponent<GrabBarrel>().Ungrab();
+
         // Reset activable platforms
         var activables = GameObject.FindObjectsOfType<Activable>();
         foreach (var activable in activables)

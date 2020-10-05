@@ -189,7 +189,8 @@ public class MotionLooper : MonoBehaviour
 	private void Disable()
 	{
 		foreach (var collider in GetComponents<Collider2D>())
-			collider.enabled = false;
+			collider.isTrigger = true;
+			//collider.enabled = false;
 		foreach (var renderer in GetComponents<SpriteRenderer>())
 			renderer.enabled = false;
 	

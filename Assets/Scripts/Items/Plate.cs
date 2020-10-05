@@ -4,28 +4,44 @@ using UnityEngine;
 
 public class Plate : MonoBehaviour
 {
-    public List<Activable> activations = new List<Activable>();
-    int counter = 0;
+	public List<Activable> activations = new List<Activable>();
+	bool isPressed = false;
 
-    private void Awake()
-    {
-        if (activations.Count == 0)
-            Debug.LogError("This pressure plate has nothing to activate !");
-    }
+	Vector2 rect;
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (counter == 0)
-            foreach (var a in activations)
-                a.Activate();
-        counter++;
-    }
+	private void Awake()
+	{
+		rect = GetComponent<BoxCollider2D>().size * transform.localScale;
+		if (activations.Count == 0)
+			Debug.LogError("This pressure plate has nothing to activate !");
+	}
 
-    void OnTriggerExit2D(Collider2D other)
-    {
-        counter--;
-        if (counter == 0)
-            foreach (var a in activations)
-                a.Deactivate();
-    }
+	public void Update()
+	{
+		var hits = Physics2D.BoxCastAll(transform.position, rect, 0, Vector2.up, 0.05f);
+		bool pressed = false;
+		foreach (var hit in hits)
+		{
+			if (hit.transform.gameObject.CompareTag("Player") ||
+			    hit.transform.gameObject.CompareTag("Barrel") ||
+			    hit.transform.gameObject.CompareTag("Mob"))
+			{
+				pressed = true;
+				break;
+			}
+		}
+
+		if (pressed && !isPressed)
+		{
+			isPressed = true;
+			foreach (var a in activations)
+				a.Activate();
+		}
+		else if (!pressed && isPressed)
+		{
+			isPressed = false;
+			foreach (var a in activations)
+				a.Deactivate();
+		}
+	}
 }

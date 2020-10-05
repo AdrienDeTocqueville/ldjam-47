@@ -23,11 +23,7 @@ public class GrabBarrel : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             if (grabbing) // Ungrab
-            {
-                barrel.GetComponent<Rigidbody2D>().simulated = true;
-                barrel.transform.SetParent(null);
-                grabbing = false;
-            }
+		    Ungrab();
             else if (barrel != null) // Grab
             {
                 barrel.transform.SetParent(transform);
@@ -38,6 +34,16 @@ public class GrabBarrel : MonoBehaviour
                 grabbing = true;
             }
         }
+    }
+
+    public void Ungrab()
+    {
+	    if (grabbing)
+	    {
+		    barrel.GetComponent<Rigidbody2D>().simulated = true;
+		    barrel.transform.SetParent(null);
+		    grabbing = false;
+	    }
     }
 
     void OnTriggerEnter2D(Collider2D collision)
