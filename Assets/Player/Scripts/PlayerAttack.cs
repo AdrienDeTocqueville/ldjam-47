@@ -35,20 +35,7 @@ public class PlayerAttack : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
-        {
-            // Reset Player state to initial
-            transform.position = intialPosition;
-            transform.rotation = intialRotation;
-
-            timeSinceAttack = 0.0f;
-
-            var loopers = GameObject.FindObjectsOfType<MotionLooper>();
-            foreach (var looper in loopers)
-            {
-                looper.Loop();
-            }
-        }
-
+            ResetScene();
 
         if (Input.GetKey(KeyCode.A) && timeSinceAttack <= 0)
         {
@@ -83,5 +70,24 @@ public class PlayerAttack : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPos.position, attackRange);
+    }
+    
+    void ResetScene()
+    {
+        // Reset Player state to initial
+        transform.position = intialPosition;
+        transform.rotation = intialRotation;
+
+        timeSinceAttack = 0.0f;
+        
+        // Reset activable platforms
+        var activables = GameObject.FindObjectsOfType<Activable>();
+        foreach (var activable in loopers)
+            activable.Loop();
+
+        // Loop mob movement
+        var loopers = GameObject.FindObjectsOfType<MotionLooper>();
+        foreach (var looper in loopers)
+            looper.Loop();
     }
 }
