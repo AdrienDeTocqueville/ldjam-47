@@ -220,7 +220,10 @@ public class MotionLooper : MonoBehaviour
 			// Disable movement script
 			var mobAIScript = GetComponent<MobAI>();
 			if (mobAIScript != null)
+            {
+				GetComponent<Animator>().SetBool("dead", true);
 				mobAIScript.enabled = false;
+            }
 
 			Disable();
 		}
