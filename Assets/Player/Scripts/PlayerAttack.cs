@@ -82,7 +82,7 @@ public class PlayerAttack : MonoBehaviour
         
         // Reset activable platforms
         var activables = GameObject.FindObjectsOfType<Activable>();
-        foreach (var activable in loopers)
+        foreach (var activable in activables)
             activable.Loop();
 
         // Loop mob movement
