@@ -16,7 +16,7 @@ public class MobAI : MonoBehaviour
 
     float frozen = 0.0f;
 
-    void Start()
+    void OnEnable()
     {
         rb = GetComponent<Rigidbody2D>();
         foreach (var collider in GetComponents<BoxCollider2D>())
@@ -28,6 +28,7 @@ public class MobAI : MonoBehaviour
         wasOnGround = false;
 
         Switcheroo(direction);
+        GetComponent<Animator>().SetBool("spawned", true);
         GetComponent<MotionLooper>().StartRecord();
     }
 
