@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlayerMovements : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
 	public float runSpeed = 40f;
 
@@ -8,11 +8,17 @@ public class PlayerMovements : MonoBehaviour
 
 	float horizontalMove = 0f;
 	bool jump = false;
-	
+
+	Vector2 intialPosition;
+	Quaternion intialRotation;
+
 
 	void Awake()
 	{
 		controller = gameObject.GetComponent<CharacterController2D>();
+
+		intialPosition = transform.position;
+		intialRotation = transform.rotation;
 	}
 
 	void Update ()
@@ -28,5 +34,13 @@ public class PlayerMovements : MonoBehaviour
 		// Move our character
 		controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
 		jump = false;
+	}
+
+	public void Loop()
+	{
+		transform.position = intialPosition;
+		transform.rotation = intialRotation;
+
+		GetComponent<GrabBarrel>().Loop();
 	}
 }

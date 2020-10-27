@@ -30,7 +30,7 @@ public class MotionLooper : MonoBehaviour
 	public enum LoopMode { Replay, Initial, Final };
 	enum State { Waiting, Record, Stop, Replay };
 
-	List<KeyFrame> frames;
+	List<KeyFrame> frames = new List<KeyFrame>();
 	State state = State.Waiting;
 	float refTime;
 	int currentFrame;
@@ -51,9 +51,6 @@ public class MotionLooper : MonoBehaviour
 		lastPosition = transform.position;
 		lastSavedDirection = Vector2.left;
 		lastSavedSpeed = 0.0f;
-
-		refTime = Time.time;
-		frames = new List<KeyFrame>();
 	}
 
 	void Update()
@@ -164,7 +161,8 @@ public class MotionLooper : MonoBehaviour
 	{
 		if (state != State.Waiting)
 			return;
-		
+
+		refTime = Time.time;
 		state = State.Record;
 
 		if (loopMode != LoopMode.Final)

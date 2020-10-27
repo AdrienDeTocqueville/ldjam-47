@@ -13,10 +13,13 @@ public class GrabBarrel : MonoBehaviour
 		        Ungrab();
             else if (barrel != null) // Grab
             {
+                GameObject.FindObjectOfType<LevelLogic>().TriggerRecordMode();
+
                 barrel.transform.SetParent(transform);
                 Vector3 pos = barrel.transform.localPosition; pos.y = 0.0f;
                 barrel.transform.localPosition = pos;
 
+                barrel.GetComponent<MotionLooper>().StartRecord();
                 barrel.GetComponent<Rigidbody2D>().simulated = false;
                 grabbing = true;
             }
