@@ -27,6 +27,7 @@ public class MobAI : MonoBehaviour
         wasOnGround = false;
 
         Switcheroo(direction);
+        GetComponent<MotionLooper>().StartRecord();
     }
 
     bool IsOnGround()
@@ -78,12 +79,12 @@ public class MobAI : MonoBehaviour
         if (((1<<collision.gameObject.layer) & collideLayers) != 0)
             Switcheroo(1 - direction);
     }
-	
+    
     void OnCollisionEnter2D(Collision2D other)
-	{
+    {
         if (other.gameObject.CompareTag("Player"))
-			other.gameObject.GetComponent<PlayerAttack>().Hit();
-	}
+            other.gameObject.GetComponent<PlayerAttack>().Hit();
+    }
 
 
     public void Switcheroo(Direction dir)

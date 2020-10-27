@@ -2,28 +2,15 @@
 
 public class GrabBarrel : MonoBehaviour
 {
-    Collider2D contact;
     GameObject barrel = null;
     bool grabbing = false;
-
-    private void Awake()
-    {
-        foreach (var collider in GetComponents<BoxCollider2D>())
-        {
-            if (collider.isTrigger)
-            {
-                contact = collider;
-                break;
-            }
-        }
-    }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
             if (grabbing) // Ungrab
-		    Ungrab();
+		        Ungrab();
             else if (barrel != null) // Grab
             {
                 barrel.transform.SetParent(transform);
@@ -36,7 +23,7 @@ public class GrabBarrel : MonoBehaviour
         }
     }
 
-    public void Ungrab()
+    void Ungrab()
     {
 	    if (grabbing)
 	    {
@@ -44,6 +31,12 @@ public class GrabBarrel : MonoBehaviour
 		    barrel.transform.SetParent(null);
 		    grabbing = false;
 	    }
+    }
+
+    public void Loop()
+    {
+        Ungrab();
+        barrel = null;
     }
 
     void OnTriggerEnter2D(Collider2D collision)

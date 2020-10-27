@@ -23,7 +23,7 @@ public class LevelLogic : MonoBehaviour
             if (firstRun)
             {
                 firstRun = false;
-                ResetScene();
+                Loop();
             }
             else
             {
@@ -33,15 +33,14 @@ public class LevelLogic : MonoBehaviour
         }
     }
 
-    void ResetScene()
+    void Loop()
     {
         // Reset Player state to initial
         transform.position = intialPosition;
         transform.rotation = intialRotation;
 
+        GetComponent<GrabBarrel>().Loop();
         GetComponent<PlayerAttack>().Loop();
-
-        GetComponent<GrabBarrel>().Ungrab();
 
         // Reset activable platforms
         var activables = GameObject.FindObjectsOfType<Activable>();

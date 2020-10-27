@@ -49,6 +49,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -144,7 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54e587c3c01096d4181a1574d78d2c86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  replayMotion: 0
+  loopMode: 2
   explosion: {fileID: 0}
   debugView: 0
   catmullRomSpline: 0
