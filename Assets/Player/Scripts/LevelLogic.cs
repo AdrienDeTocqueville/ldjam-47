@@ -40,7 +40,6 @@ public class LevelLogic : MonoBehaviour
         transform.rotation = intialRotation;
 
         GetComponent<GrabBarrel>().Loop();
-        GetComponent<PlayerAttack>().Loop();
 
         // Reset activable platforms
         var activables = GameObject.FindObjectsOfType<Activable>();

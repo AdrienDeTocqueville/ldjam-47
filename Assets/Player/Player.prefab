@@ -45,7 +45,6 @@ GameObject:
   - component: {fileID: 1527047519923264624}
   - component: {fileID: 6576528956820685121}
   - component: {fileID: 6576528956820685120}
-  - component: {fileID: 1167148766}
   - component: {fileID: 9058251745569339956}
   - component: {fileID: 4403754458490791231}
   - component: {fileID: 3647241078877320369}
@@ -87,6 +86,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -199,14 +199,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_JumpForce: 800
-  m_CrouchSpeed: 0.36
   m_MovementSmoothing: 0.05
   m_AirControl: 1
   m_WhatIsGround:
     serializedVersion: 2
     m_Bits: 1792
   m_GroundCheck: {fileID: 6576528957306862642}
-  m_CeilingCheck: {fileID: 0}
 --- !u!114 &6576528956820685120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -220,27 +218,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   runSpeed: 40
---- !u!114 &1167148766
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6576528956820685147}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23b0a297743d29340aa160d00c065998, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hp: 3
-  heart: {fileID: 6896927679475387002, guid: 821a24b6f32bc004a842dcf1da5349e4, type: 3}
-  attackCooldown: 0.5
-  attackPos: {fileID: 1537159164}
-  whatIsEnemies:
-    serializedVersion: 2
-    m_Bits: 512
-  attackRange: 0.8
-  damage: 50
 --- !u!114 &9058251745569339956
 MonoBehaviour:
   m_ObjectHideFlags: 0
