@@ -39,7 +39,6 @@ public class LevelLogic : MonoBehaviour
         transform.position = intialPosition;
         transform.rotation = intialRotation;
 
-        GetComponent<PlayerAttack>().Loop();
 
         GetComponent<GrabBarrel>().Ungrab();
 
