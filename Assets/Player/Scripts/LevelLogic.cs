@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelLogic : MonoBehaviour
 {
+    public GameObject initialIcon = null;
     public GameObject recordIcon = null;
     public GameObject replayIcon = null;
 
@@ -42,7 +43,11 @@ public class LevelLogic : MonoBehaviour
         child.transform.localPosition = pos;
     }
 
-    // Update is called once per frame
+    private void Start()
+    {
+        SetIcon(initialIcon);
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))

@@ -31,6 +31,7 @@ public class Plate : MonoBehaviour
 
 		if (pressed && !isPressed)
 		{
+			GameObject.FindObjectOfType<LevelLogic>().TriggerRecordMode();
 			isPressed = true;
 			foreach (var a in activations)
 				a.Activate();

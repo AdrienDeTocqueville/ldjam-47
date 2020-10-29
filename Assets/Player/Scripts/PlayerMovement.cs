@@ -38,9 +38,9 @@ public class PlayerMovement : MonoBehaviour
 
 	public void Loop()
 	{
+		GetComponent<GrabBarrel>().Loop();
+
 		transform.position = intialPosition;
 		transform.rotation = intialRotation;
-
-		GetComponent<GrabBarrel>().Loop();
 	}
 }
