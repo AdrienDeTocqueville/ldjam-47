@@ -152,7 +152,8 @@ public class MotionLooper : MonoBehaviour
 	private void Enable()
 	{
 		foreach (var collider in GetComponents<Collider2D>())
-			collider.enabled = true;
+			collider.isTrigger = false;
+			//collider.enabled = true;
 		foreach (var renderer in GetComponents<SpriteRenderer>())
 			renderer.enabled = true;
 	
@@ -207,7 +208,9 @@ public class MotionLooper : MonoBehaviour
 
 	public void Loop()
 	{
-		Destroy(GetComponent<Rigidbody2D>());
+		if (loopMode == LoopMode.Replay)
+			Destroy(GetComponent<Rigidbody2D>());
+
 		StopRecord();
 
 		if (state != State.Waiting)

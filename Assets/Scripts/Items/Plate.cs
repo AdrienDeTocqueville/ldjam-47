@@ -20,6 +20,8 @@ public class Plate : MonoBehaviour
 		bool pressed = false;
 		foreach (var hit in hits)
 		{
+			if (hit.collider.isTrigger)
+				continue;
 			if (hit.transform.gameObject.CompareTag("Player") ||
 			    hit.transform.gameObject.CompareTag("Barrel") ||
 			    hit.transform.gameObject.CompareTag("Mob"))
